@@ -24,16 +24,33 @@ const result = UserSchema.parse(UserInput);
 console.log(result);
 
 //Schema Composition
-const addressSchema = z.object({
+const AddressSchema = z.object({
 	street: z.string(),
 	city: z.string(),
 });
-type AddressType = z.infer<typeof addressSchema>;
+type AddressType = z.infer<typeof AddressSchema>;
 
 const addressInput: AddressType = {
 	city: "Street",
 	street: "test 1",
 };
 
-const result2 = addressSchema.parse(addressInput);
+const result2 = AddressSchema.parse(addressInput);
 console.log(result2);
+
+//Combining schemas, you can combine schemas to create more complex schemas
+
+const CitizenSchema = UserSchema.merge(AddressSchema);
+
+type CitizenType = z.infer<typeof CitizenSchema>;
+
+const citizenInput: CitizenType = {
+	email: "tes@test.com",
+	fullName: "test",
+	phone: 23423,
+	street: "test 1",
+	city: "Street",
+};
+
+const result3 = CitizenSchema.parse(citizenInput);
+console.log(result3);
